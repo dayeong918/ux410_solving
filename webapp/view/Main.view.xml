@@ -1,0 +1,81 @@
+<mvc:View controllerName="sap.btp.ux410solving.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true" 
+    xmlns:t="sap.ui.table" xmlns="sap.m" xmlns:f="sap.f" 
+    xmlns:fb="sap.ui.comp.filterbar" xmlns:core="sap.ui.core"
+    xmlns:viz="sap.viz.ui5.controls"  xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:layout="sap.ui.layout" xmlns:viz.data="sap.viz.ui5.data"
+    >
+    <f:DynamicPage>
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="VizFrame" />
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader>
+                <fb:FilterBar id="filterBar" header="Search Filters" useToolbar="false" search="onSearch" filterContainerWidth="10rem" >
+                    <fb:filterGroupItems>
+                        <fb:FilterGroupItem  groupName="__$INTERNAL$" name="OrderID" label="Order ID" visibleInFilterBar="true">
+                            <fb:control>
+                                <ComboBox
+                                    id ="sOrderID"
+                                    showSecondaryValues="true"
+                                    items="{
+                                        path: '/Orders',
+                                        templateShareable: true
+                                    }"
+                                    >
+                                    <core:ListItem key="{OrderID}" text="{OrderID}" additionalText="{CustomerID}"/>
+                                </ComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+                    </fb:filterGroupItems>
+                    <fb:filterGroupItems>
+                        <fb:FilterGroupItem  groupName="__$INTERNAL$2" name="Type" label="Type" visibleInFilterBar="true">
+                            <fb:control>
+                                <ComboBox
+                                    id ="cType"
+                                    showSecondaryValues="true"
+                                    items="{
+                                        path: 'typeList>/list',
+                                        templateShareable: true
+                                    }"
+                                    required="true"
+                                    value="bar"
+                                    >
+                                    <core:ListItem key="{typeList>type}" text="{typeList>type}"/>
+                                </ComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+                    </fb:filterGroupItems>
+                </fb:FilterBar>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <viz:VizFrame id="idVizFrame" uiConfig="{applicationSet:'fiori'}"
+                height='100%' width="100%" vizType='bar' selectData='onChartSelectData'>
+            <viz:dataset>
+            <viz.data:FlattenedDataset data="{/Order_Details}">
+                <viz.data:dimensions>
+                    <viz.data:DimensionDefinition name="OrderID" value="{OrderID}" />
+                    <viz.data:DimensionDefinition name="ProductID" value="{ProductID}" />
+                </viz.data:dimensions>
+                <viz.data:measures>
+                    <viz.data:MeasureDefinition name="UnitPrice" value="{UnitPrice}" />
+                </viz.data:measures>
+            </viz.data:FlattenedDataset>
+        </viz:dataset>
+        <viz:feeds>
+        <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="UnitPrice" />
+        <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="OrderID,ProductID" />
+<!-- 
+Dimension 가 두개 이상인 경우, values="A,B" 와 같이 콤마로 작성 가능
+이 때, 콤마 사이에 space 가 들어가지 않도록 주의.
+ -->
+</viz:feeds>
+        </viz:VizFrame>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>
