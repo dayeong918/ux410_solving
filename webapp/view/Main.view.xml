@@ -43,7 +43,7 @@
                                         templateShareable: true
                                     }"
                                     required="true"
-                                    value="bar"
+                                    selectedKey="bar"
                                     >
                                     <core:ListItem key="{typeList>type}" text="{typeList>type}"/>
                                 </ComboBox>
